@@ -3,13 +3,13 @@ const router = express.Router()
 const Note = require('../models/note')
 
 // get all notes from database and display
-router.get('/notes', async(req,res)=>{
+router.get('/api/notes', async(req,res)=>{
     const notes = await Note.find({})
     res.send(notes)
 })
 
 // create new note and save to database
-router.post('/notes/add', async(req,res)=>{
+router.post('/api/notes/add', async(req,res)=>{
     if(req.body!==''){
         const newNote = new Note({
             title: req.body.title,
@@ -18,14 +18,14 @@ router.post('/notes/add', async(req,res)=>{
         await Note.create(newNote)
         console.log('new note saved successfully')
         // console.log(newNote);
-        res.redirect('/notes')
+        res.redirect('/api/notes')
     }
     else(
-        res.redirect('/notes')
+        res.redirect('/api/notes')
     )
 })
 
-router.post('/notes/edit',async(req,res)=>{
+router.post('/api/notes/edit',async(req,res)=>{
     const id = req.body.id
     const updatedData = ({
         title : req.body.title,
@@ -38,14 +38,14 @@ router.post('/notes/edit',async(req,res)=>{
     // foundNote.title=title
     // foundNote.note=note
     console.log('note updated\n',updatedData);
-    res.redirect('/notes')
+    res.redirect('/api/notes')
 })
 
 // delete note
-router.post('/notes/delete/:noteId',async(req,res)=>{
+router.post('/api/notes/delete/:noteId',async(req,res)=>{
     await Note.findByIdAndDelete(req.params.noteId)
     console.log("note deleted successfully")
-    res.redirect('/notes')
+    res.redirect('/api/notes')
 })
 
 
